@@ -30,7 +30,7 @@ Pin every action to a full commit SHA with the version as a comment. Dependabot 
 ## Enforcement
 
 - Hooks in [.pre-commit-config.yaml](../../.pre-commit-config.yaml) are the only definition of the checks: the pin check, its unit tests and its mutation tests (any surviving mutant fails).
-- CI runs `pre-commit run --all-files`; that `pre-commit` check is required on `main` with no bypass: [.github/rulesets/main.json](../../.github/rulesets/main.json). `integration_id` 15368 is the GitHub Actions app, so only a check run from Actions satisfies it; a status posted through the API under the same name doesn't.
+- CI runs `pre-commit run --all-files`; that `pre-commit` check is required on `main` with no bypass ([ADR 0003](0003-branch-protection.md)). `integration_id` 15368 is the GitHub Actions app, so only a check run from Actions satisfies it; a status posted through the API under the same name doesn't.
 - Third-party pre-commit hooks are frozen to commit SHAs for the same reason (`pre-commit autoupdate --freeze`).
 - To pin an action: `git ls-remote https://github.com/OWNER/REPO 'refs/tags/TAG^{}' refs/tags/TAG`, then write the SHA with `# TAG`.
 

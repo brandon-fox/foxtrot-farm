@@ -1,0 +1,18 @@
+select(.name == $n)	select(.name != $n)
+    return 1	    return 0
+if ! jq -e	if jq -e
+ and ($a | length) == ($b | length)	
+else $a == $b end;	else true end;
+.rules |= sort_by(.type)	.rules |= .
+if has("bypass_actors") then . else .bypass_actors = $w.bypass_actors end	.
+-X PUT	-X POST
+[ -n "$id" ]	[ -z "$id" ]
+  check # read back	  true
+${GITHUB_REPOSITORY:-}	${NOPE:-}
+[ -n "$repo" ] ||	true ||
+    exit 2	    exit 0
+"enforcement": "active"	"enforcement": "evaluate"
+"bypass_actors": [],	"bypass_actors": [{ "actor_id": 5, "actor_type": "RepositoryRole", "bypass_mode": "always" }],
+, "integration_id": 15368	
+{ "type": "non_fast_forward" },	
+"~DEFAULT_BRANCH"	"refs/heads/main"

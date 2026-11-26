@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Unit tests for scripts/check-action-pins.sh. Steps for features/action-pins.feature.
-# Usage: tests/check-action-pins.test.sh   (CHECKER=path overrides the script under test)
+# Usage: tests/check-action-pins.test.sh   (SUT=path overrides the script under test)
 set -uo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
-checker="$(cd "$root" && realpath "${CHECKER:-scripts/check-action-pins.sh}")"
+checker="$(cd "$root" && realpath "${SUT:-scripts/check-action-pins.sh}")"
 sha="11d5960a326750d5838078e36cf38b85af677262"
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
