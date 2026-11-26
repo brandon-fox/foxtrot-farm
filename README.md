@@ -4,19 +4,7 @@ One-page landing site for Foxtrot Farm and Firewood. Static HTML, no build step,
 
 ## Spec
 
-Feature: Landing page
-  Scenario: A visitor opens the site
-    Given the site is published
-    When a visitor opens it on a phone or desktop
-    Then they see what the business is: firewood, a truck farm and a nursery
-    And they see that it reopens for the 2027 season
-    And no home address, phone number or personal email appears
-
-Feature: Custom domain
-  Scenario: foxtrot.farm points at the site
-    Given foxtrot.farm is registered to the business
-    When `CNAME.pending` is renamed to `CNAME` and DNS points at GitHub Pages
-    Then https://foxtrot.farm serves this page over HTTPS
+[features/](features/): landing page, custom domain, hosting switch, action pinning.
 
 ## Open items (VERIFY)
 
@@ -27,5 +15,9 @@ Feature: Custom domain
 
 ## Deploy
 
-1. Push to the default branch.
-2. Settings > Pages > Source: Deploy from a branch, `main`, `/ (root)`.
+Pushing to `main` deploys through `.github/workflows/static.yml` (Settings > Pages > Source: GitHub Actions).
+
+## Contributing
+
+- Once per clone: `pip install -r requirements-dev.txt && pre-commit install`.
+- Rules: [docs/decisions](docs/decisions). Required checks on `main` enforce them.
