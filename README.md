@@ -27,5 +27,10 @@ Feature: Custom domain
 
 ## Deploy
 
-1. Push to the default branch.
-2. Settings > Pages > Source: Deploy from a branch, `main`, `/ (root)`.
+Pushing to `main` deploys through `.github/workflows/static.yml` (Settings > Pages > Source: GitHub Actions).
+
+## Contributing
+
+- Run `pre-commit install` once per clone. The hook checks that every GitHub Action is pinned to a commit SHA.
+- Rules for coding agents and people: [AGENTS.md](AGENTS.md).
+- Decisions: [docs/decisions](docs/decisions).
