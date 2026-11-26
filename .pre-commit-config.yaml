@@ -1,4 +1,5 @@
-# Install once per clone: pre-commit install. CI runs the same checks as required checks on main.
+# The only definition of this repo's checks. CI runs them all (.github/workflows/ci.yml).
+# Setup once per clone: pip install -r requirements-dev.txt && pre-commit install
 repos:
   - repo: local
     hooks:

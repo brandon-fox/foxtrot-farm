@@ -19,5 +19,5 @@ Pushing to `main` deploys through `.github/workflows/static.yml` (Settings > Pag
 
 ## Contributing
 
-- Run `pre-commit install` once per clone.
+- Once per clone: `pip install -r requirements-dev.txt && pre-commit install`.
 - Rules: [docs/decisions](docs/decisions). Required checks on `main` enforce them.

@@ -29,9 +29,8 @@ Pin every action to a full commit SHA with the version as a comment. Dependabot 
 
 ## Enforcement
 
-- Check: `scripts/check-action-pins.sh`, run by pre-commit and the `Action pins` workflow.
-- Unit tests: `tests/check-action-pins.test.sh`. Mutation tests: `tests/mutation.sh` fail if any mutant of the check survives.
-- Required checks on `main` (no bypass): [.github/rulesets/main.json](../../.github/rulesets/main.json).
+- Hooks in [.pre-commit-config.yaml](../../.pre-commit-config.yaml) are the only definition of the checks: the pin check, its unit tests and its mutation tests (any surviving mutant fails).
+- CI runs `pre-commit run --all-files`; that `pre-commit` check is required on `main` with no bypass: [.github/rulesets/main.json](../../.github/rulesets/main.json).
 - To pin an action: `git ls-remote https://github.com/OWNER/REPO 'refs/tags/TAG^{}' refs/tags/TAG`, then write the SHA with `# TAG`.
 
 ## Behaviour
