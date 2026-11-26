@@ -32,7 +32,8 @@ echo "$f:$line: not	echo "$f: not
 MUTANTS
 
 if ! CHECKER="$src" bash "$tests" >/dev/null 2>&1; then
-  echo "Unit tests fail on the unmutated script; fix them first."; exit 1
+  echo "Unit tests fail on the unmutated script; fix them first."
+  exit 1
 fi
 
 original="$(cat "$src")"
@@ -40,11 +41,14 @@ killed=0 survived=0
 for m in "${mutants[@]}"; do
   from="${m%%$'\t'*}" to="${m#*$'\t'}"
   if [[ "$original" != *"$from"* ]]; then
-    echo "STALE: mutant no longer matches the script: $from"; survived=$((survived + 1)); continue
+    echo "STALE: mutant no longer matches the script: $from"
+    survived=$((survived + 1))
+    continue
   fi
-  printf '%s\n' "${original/"$from"/"$to"}" > "$work/mutant.sh"
+  printf '%s\n' "${original/"$from"/"$to"}" >"$work/mutant.sh"
   if CHECKER="$work/mutant.sh" bash "$tests" >/dev/null 2>&1; then
-    echo "SURVIVED: $from  ->  $to"; survived=$((survived + 1))
+    echo "SURVIVED: $from  ->  $to"
+    survived=$((survived + 1))
   else
     killed=$((killed + 1))
   fi

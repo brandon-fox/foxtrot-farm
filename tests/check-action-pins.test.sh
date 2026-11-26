@@ -14,10 +14,12 @@ pass=0 fail=0
 run() {
   local name="$1" want="$2" yaml="$3" expect="${4:-}" f out got
   f="$work/$pass-$fail.yml"
-  printf '%s\n' "$yaml" > "$f"
-  out="$(bash "$checker" "$f" 2>&1)"; got=$?
+  printf '%s\n' "$yaml" >"$f"
+  out="$(bash "$checker" "$f" 2>&1)"
+  got=$?
   if [ "$got" -ne "$want" ] || { [ -n "$expect" ] && [[ "$out" != *"$expect"* ]]; }; then
-    echo "FAIL: $name (exit $got, want $want)"; printf '%s\n' "$out" | sed 's/^/  /'
+    echo "FAIL: $name (exit $got, want $want)"
+    printf '%s\n' "$out" | sed 's/^/  /'
     fail=$((fail + 1))
   else
     pass=$((pass + 1))
@@ -44,7 +46,13 @@ run "full SHA with comment passes" 0 "$(step "actions/checkout@$sha # v4.4.0")"
 run "double-quoted SHA passes" 0 "$(step "\"actions/checkout@$sha\"")"
 run "single-quoted SHA passes" 0 "$(step "'actions/checkout@$sha'")"
 run "success prints nothing" 0 "$(step "actions/checkout@$sha")"
-out="$(bash "$checker" /dev/null 2>&1)"; [ -z "$out" ] && pass=$((pass + 1)) || { echo "FAIL: empty input is silent"; fail=$((fail + 1)); }
+out="$(bash "$checker" /dev/null 2>&1)"
+if [ -z "$out" ]; then
+  pass=$((pass + 1))
+else
+  echo "FAIL: empty input is silent"
+  fail=$((fail + 1))
+fi
 # Scenario: Local actions and digest-pinned images
 run "local action passes" 0 "$(step ./my-action)"
 run "quoted local action passes" 0 "$(step "\"./my-action\"")"
@@ -54,22 +62,44 @@ run "docker tag fails" 1 "$(step docker://alpine:3)"
 run "job-level uses is checked" 1 "$(printf 'jobs:\n  a:\n    uses: org/repo/.github/workflows/x.yml@main\n')"
 run "value on the next line is checked" 1 "$(printf '      - uses:\n          actions/checkout@v4\n')"
 run "commented-out uses is ignored" 0 "$(printf '      # - uses: actions/checkout@v4\n')"
-run "every violation is reported" 1 "$(step actions/checkout@v4; printf '      - uses: actions/setup-node@v4\n')" "actions/setup-node@v4"
-run "one bad pin among good ones fails" 1 "$(step "actions/checkout@$sha"; printf '      - uses: actions/setup-node@v4\n')"
+run "every violation is reported" 1 "$(
+  step actions/checkout@v4
+  printf '      - uses: actions/setup-node@v4\n'
+)" "actions/setup-node@v4"
+run "one bad pin among good ones fails" 1 "$(
+  step "actions/checkout@$sha"
+  printf '      - uses: actions/setup-node@v4\n'
+)"
 
 # Missing files are skipped
-out="$(bash "$checker" "$work/missing.yml" 2>&1)"; got=$?
-[ "$got" -eq 0 ] && pass=$((pass + 1)) || { echo "FAIL: missing file is skipped (exit $got)"; fail=$((fail + 1)); }
+out="$(bash "$checker" "$work/missing.yml" 2>&1)"
+got=$?
+if [ "$got" -eq 0 ]; then
+  pass=$((pass + 1))
+else
+  echo "FAIL: missing file is skipped (exit $got)"
+  fail=$((fail + 1))
+fi
 
 # With no arguments it scans .github for .yml and .yaml files
-repo="$work/repo"; mkdir -p "$repo/.github/workflows" "$repo/.github/actions/x"
-step "actions/checkout@$sha" > "$repo/.github/workflows/ok.yml"
-step actions/checkout@v4 > "$repo/.github/actions/x/action.yaml"
-out="$(cd "$repo" && bash "$checker" 2>&1)"; got=$?
-if [ "$got" -eq 1 ] && [[ "$out" == *"action.yaml:4:"* ]]; then pass=$((pass + 1)); else echo "FAIL: default scan finds .yaml (exit $got)"; fail=$((fail + 1)); fi
-step actions/checkout@v4 > "$repo/.github/workflows/bad.yml"; rm "$repo/.github/actions/x/action.yaml"
-out="$(cd "$repo" && bash "$checker" 2>&1)"; got=$?
-if [ "$got" -eq 1 ] && [[ "$out" == *"bad.yml:4:"* ]]; then pass=$((pass + 1)); else echo "FAIL: default scan finds .yml (exit $got)"; fail=$((fail + 1)); fi
+repo="$work/repo"
+mkdir -p "$repo/.github/workflows" "$repo/.github/actions/x"
+step "actions/checkout@$sha" >"$repo/.github/workflows/ok.yml"
+step actions/checkout@v4 >"$repo/.github/actions/x/action.yaml"
+out="$(cd "$repo" && bash "$checker" 2>&1)"
+got=$?
+if [ "$got" -eq 1 ] && [[ "$out" == *"action.yaml:4:"* ]]; then pass=$((pass + 1)); else
+  echo "FAIL: default scan finds .yaml (exit $got)"
+  fail=$((fail + 1))
+fi
+step actions/checkout@v4 >"$repo/.github/workflows/bad.yml"
+rm "$repo/.github/actions/x/action.yaml"
+out="$(cd "$repo" && bash "$checker" 2>&1)"
+got=$?
+if [ "$got" -eq 1 ] && [[ "$out" == *"bad.yml:4:"* ]]; then pass=$((pass + 1)); else
+  echo "FAIL: default scan finds .yml (exit $got)"
+  fail=$((fail + 1))
+fi
 
 echo "$pass passed, $fail failed"
 [ "$fail" -eq 0 ]
