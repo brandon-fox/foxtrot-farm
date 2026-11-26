@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Foxtrot Farm and Firewood</title>
+  <meta name="description" content="Foxtrot Farm and Firewood: seasoned firewood, a truck farm and a nursery on Long Island, New York. Back for the 2027 season.">
+  <style>
+    :root {
+      --bg: #f6f1e7;
+      --ink: #2b2118;
+      --muted: #6b5a49;
+      --accent: #8a3b12;
+      --leaf: #3f5f2a;
+      --card: #fffaf1;
+      --line: #e3d6c2;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1c1712;
+        --ink: #f1e8da;
+        --muted: #c2b29c;
+        --accent: #e08a4f;
+        --leaf: #9cc27a;
+        --card: #261f18;
+        --line: #3a3027;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 17px/1.6 Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    }
+    main { max-width: 760px; margin: 0 auto; padding: 48px 16px 32px; }
+    header { border-bottom: 2px solid var(--line); padding-bottom: 28px; margin-bottom: 28px; }
+    .mark { font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+    h1 { font-size: clamp(32px, 7vw, 48px); line-height: 1.1; margin: 0 0 12px; }
+    .lede { font-size: 20px; color: var(--muted); margin: 0; }
+    .badge {
+      display: inline-block; margin-top: 18px; padding: 6px 12px;
+      border: 1px solid var(--accent); border-radius: 999px;
+      color: var(--accent); font-size: 14px; letter-spacing: .04em;
+    }
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    section.card {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 10px; padding: 20px;
+    }
+    section.card h2 { font-size: 20px; margin: 0 0 8px; color: var(--leaf); }
+    section.card p { margin: 0; }
+    .story { margin-top: 32px; }
+    .story h2, .contact h2 { font-size: 20px; margin: 0 0 8px; }
+    .contact { margin-top: 32px; padding-top: 24px; border-top: 2px solid var(--line); }
+    footer { margin-top: 40px; font-size: 14px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="mark">Long Island, New York</p>
+      <h1>Foxtrot Farm and Firewood</h1>
+      <p class="lede">Seasoned firewood, a working truck farm and a nursery. Since 2013.</p>
+      <span class="badge">Back for the 2027 season</span>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Firewood</h2>
+        <p>Seasoned hardwood, cut and split on the farm, plus wood from local suppliers.</p>
+      </section>
+      <section class="card">
+        <h2>Truck farm</h2>
+        <p>Seasonal vegetables grown in the field and sold fresh, in season.</p>
+      </section>
+      <section class="card">
+        <h2>Nursery</h2>
+        <p>Plants and young trees raised on the farm for your yard and orchard.</p>
+      </section>
+    </div>
+
+    <section class="story">
+      <h2>About the farm</h2>
+      <p>Foxtrot Farm started in 2013 and is coming back as Foxtrot Farm and Firewood. We are taking 2026 to rebuild and will reopen for the 2027 season.</p>
+    </section>
+
+    <section class="contact">
+      <h2>Get in touch</h2>
+      <p>Ordering and contact details will be posted here before the 2027 season opens.</p>
+    </section>
+
+    <footer>&copy; Foxtrot Farm and Firewood</footer>
+  </main>
+</body>
+</html>
