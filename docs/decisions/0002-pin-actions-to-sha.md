@@ -25,22 +25,15 @@ The Pages workflow GitHub generated uses tags (`@v4`, `@v5`). A tag can be moved
 
 ## Decision
 
-Pin every action to a full commit SHA with the version as a comment. `scripts/check-action-pins.sh` enforces it in pre-commit and in the `Action pins` CI workflow. Dependabot bumps pins monthly. Agent rules live in `AGENTS.md`.
+Pin every action to a full commit SHA with the version as a comment. Dependabot bumps pins monthly.
+
+## Enforcement
+
+- Check: `scripts/check-action-pins.sh`, run by pre-commit and the `Action pins` workflow.
+- Unit tests: `tests/check-action-pins.test.sh`. Mutation tests: `tests/mutation.sh` fail if any mutant of the check survives.
+- Required checks on `main` (no bypass): [.github/rulesets/main.json](../../.github/rulesets/main.json).
+- To pin an action: `git ls-remote https://github.com/OWNER/REPO 'refs/tags/TAG^{}' refs/tags/TAG`, then write the SHA with `# TAG`.
 
 ## Behaviour
 
-Feature: Action pinning
-  Scenario: A workflow uses a tag
-    Given a workflow step with `uses: actions/checkout@v4`
-    When the pre-commit hook or the Action pins check runs
-    Then it fails and names the file, line and reference
-
-  Scenario: A workflow uses a full SHA
-    Given `uses: actions/checkout@<40-char-sha> # v4.4.0`
-    When the check runs
-    Then it passes
-
-  Scenario: Local actions and digest-pinned images
-    Given `uses: ./my-action` or `uses: docker://image@sha256:<digest>`
-    When the check runs
-    Then it passes
+[features/action-pins.feature](../../features/action-pins.feature)

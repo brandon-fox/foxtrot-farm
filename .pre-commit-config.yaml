@@ -1,4 +1,4 @@
-# Install once per clone: pre-commit install
+# Install once per clone: pre-commit install. CI runs the same checks as required checks on main.
 repos:
   - repo: local
     hooks:
@@ -7,3 +7,15 @@ repos:
         entry: scripts/check-action-pins.sh
         language: script
         files: ^\.github/.*\.ya?ml$
+      - id: unit-tests
+        name: Unit tests
+        entry: tests/check-action-pins.test.sh
+        language: script
+        pass_filenames: false
+        files: ^(scripts|tests)/
+      - id: mutation-tests
+        name: Mutation tests
+        entry: tests/mutation.sh
+        language: script
+        pass_filenames: false
+        files: ^(scripts|tests)/
