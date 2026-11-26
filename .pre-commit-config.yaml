@@ -28,7 +28,7 @@ repos:
         files: ^\.github/.*\.ya?ml$
       - id: unit-tests
         name: Unit tests
-        entry: tests/check-action-pins.test.sh
+        entry: tests/unit.sh
         language: script
         pass_filenames: false
         files: ^(scripts|tests)/
@@ -38,3 +38,10 @@ repos:
         language: script
         pass_filenames: false
         files: ^(scripts|tests)/
+      - id: ruleset-drift
+        name: Ruleset on main matches scripts/ruleset.sh
+        entry: scripts/ruleset.sh check
+        language: script
+        pass_filenames: false
+        always_run: true
+        stages: [manual]
